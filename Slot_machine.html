@@ -1,0 +1,143 @@
+
+<html>
+<head>
+	<title>9尾を探せ！</title>
+</head>
+<body>
+    <center >
+        <h2><span style="color:#ff3300">9尾</span>を探せ！<h2>
+        <SCRIPT language="JavaScript1.1">
+
+            game = false
+            box1 = true
+            box2 = true
+            box3 = true
+            score = 0;
+            num = Math.floor(Math.random() * 9)
+
+            IMG = new Array();
+
+            IMG[0] = new Image(); IMG[0].src = "image/1尾.PNG";
+            IMG[1] = new Image(); IMG[1].src = "image/2尾.PNG";
+            IMG[2] = new Image(); IMG[2].src = "image/3尾.PNG";
+            IMG[3] = new Image(); IMG[3].src = "image/4尾.PNG";
+            IMG[4] = new Image(); IMG[4].src = "image/5尾.PNG";
+            IMG[5] = new Image(); IMG[5].src = "image/6尾.PNG";
+            IMG[6] = new Image(); IMG[6].src = "image/7尾.PNG";
+            IMG[7] = new Image(); IMG[7].src = "image/8尾.PNG";
+            IMG[8] = new Image(); IMG[8].src = "image/9尾.PNG";
+
+            goodsIMG = new Array();
+
+            goodsIMG[0] = new Image(); goodsIMG[0].src = "image/1尾goods.PNG";
+            goodsIMG[1] = new Image(); goodsIMG[1].src = "image/2尾goods.PNG";
+            goodsIMG[2] = new Image(); goodsIMG[2].src = "image/3尾goods.PNG";
+            goodsIMG[3] = new Image(); goodsIMG[3].src = "image/4尾goods.PNG";
+            goodsIMG[4] = new Image(); goodsIMG[4].src = "image/5尾goods.PNG";
+            goodsIMG[5] = new Image(); goodsIMG[5].src = "image/6尾goods.PNG";
+            goodsIMG[6] = new Image(); goodsIMG[6].src = "image/7尾goods.PNG";
+            goodsIMG[7] = new Image(); goodsIMG[7].src = "image/8尾goods.PNG";
+            goodsIMG[8] = new Image(); goodsIMG[8].src = "image/9尾goods.PNG";
+            //各スロットを止まる
+            function end(variable){
+                if(game == true){
+                    if(variable == 1)box1 = false
+                    if(variable == 2)box2 = false
+                    if(variable == 3)box3 = false
+                }
+                if((box1 == false) && (box2 == false) && (box3 == false)){
+                    clearTimeout(tid)
+                    scoreCount();
+                }
+            }
+
+            function scoreCount(){
+                var count = ["first", "second", "third"]
+
+                same = new Array();
+                for(var a = 0; a < 3; a++){
+                    for(var b = 0; b < 9; b++){
+                        if(document.images[a].src == IMG[b].src){
+                            score += b+1;
+                            same[a] = b;
+                            //alert(same[a]);
+                        }
+                    }
+                    if(same[0] == same[1] && same[1] == same[2]){
+                        goods.style.display = ''
+                        document.images["goods"].src = goodsIMG[same[0]].src
+                    }
+                }
+                document.form.score.value = score + "点";
+                game = false
+                box1 = true
+                box2 = true
+                box3 = true
+            }
+
+            //スロットを動ける
+            function turn(){
+                
+                if(num == 9) num = 0
+                if(box1){
+                    document.images["first"].src = IMG[num % 9].src
+                }
+                if(box2){
+                    document.images["second"].src = IMG[(num + 3) % 9].src
+                }
+                if(box3){
+                    document.images["third"].src = IMG[(num + 6) % 9].src
+                }
+                num += 1
+                tid = setTimeout("turn()", 60)  
+            }
+
+
+            function startGame(){
+            if(game == false){
+                    game = true
+                    score = 0;
+                    turn()
+                }
+            }
+
+            document.write('<form name="form" >')
+            document.write('<img src="image/9尾.PNG" width="100px" height="100px" style="border:1px solid #000; padding:10px" name="first">')
+            document.write('<img src="image/9尾.PNG" width="100px" height="100px" style="border:1px solid #000; padding:10px" name="second">')
+            document.write('<img src="image/9尾.PNG" width="100px" height="100px" style="border:1px solid #000; padding:10px" name="third"><br>')
+            //スロットストップボタン
+            document.write('<input type="button" value="1 ストップ" name="firstb" onClick=end(1)> <input type="button" value="2 ストップ" name="secondb" onClick=end(2)> <input type="button" value="3 ストップ" name="thirdb" onClick=end(3)><br><br>')
+            //ゲーム始まりボタン
+            document.write('<input type="text" size=30 name="score" id="text" value="スタートボタンを押してください。">')
+            document.write('<input type="button" value="  スタート  " onClick=startGame()></form><br>')
+            document.write('<img src="image/白.PNG" style="display:none; height:200px; margin-top:-50px" alt="goods" id="goods" name="goods"><br>')
+        </SCRIPT>
+
+        <span id="ex" onclick="if(explanation.style.display == 'none'){explanation.style.display=''; ex.innerText='ゲーム説明 ▲'}
+                        else {explanation.style.display='none'; ex.innerText='ゲーム説明 ▼'}" style="color: blue">
+            ゲーム説明 ▼
+        </span>
+
+        <div id="explanation" 
+            style=" width:570px; display: none; font-size: 20px; border: gray solid 1px"><br>
+            1.　「9尾を探せ！」はスロットマシンゲームです。<br>
+            2.　’スタート’ボタンを押してから始めます。<br>
+            3.　’ストップ’ボタンを押すとスロットが止まります。<br>
+            4.　点数は各スロットの絵の点数を全てプラスします。<br>
+            5.　各絵の点数は<br>
+            <img src="image/1尾.PNG" style="width:40px; height:40px;" alt="1尾">は1点、
+            <img src="image/2尾.PNG" style="width:40px; height:40px;" alt="2尾">は2点、
+            <img src="image/3尾.PNG" style="width:40px; height:40px;" alt="3尾">は3点、<br>
+            <img src="image/4尾.PNG" style="width:40px; height:40px;" alt="4尾">は4点、
+            <img src="image/5尾.PNG" style="width:40px; height:40px;" alt="5尾">は5点、
+            <img src="image/6尾.PNG" style="width:40px; height:40px;" alt="6尾">は6点、<br>
+            <img src="image/7尾.PNG" style="width:40px; height:40px;" alt="7尾">は7点、
+            <img src="image/8尾.PNG" style="width:40px; height:40px;" alt="8尾">は8点、
+            <img src="image/9尾.PNG" style="width:40px; height:40px;" alt="9尾">は9点です。<br>
+            6.　スロットの絵を全て合わせたら素晴らしい絵が出ます。<br><br>
+            
+        </div>
+
+</center>
+</body>
+</html>
